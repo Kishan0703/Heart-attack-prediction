@@ -3,16 +3,36 @@ import pandas as pd
 import xgboost
 import numpy as np
 import re
+import os
 
 
 @st.cache_resource
-def load_model(path: str = "xgb_model.bin"):
+def load_model(bin_path: str = "xgb_model.bin", json_path: str = "xgb_model.json"):
+    """Load model: prefer JSON/UBJ if available, fall back to legacy binary.
+
+    Modern xgboost releases removed support for the old binary format. If a JSON
+    model exists in the repo (`xgb_model.json`) we load that (works with xgboost 3.x).
+    Otherwise we attempt to load the legacy `xgb_model.bin` (requires xgboost 1.7.x).
+    """
+    # prefer JSON
     try:
-        model = xgboost.Booster()
-        model.load_model(path)
-        return model
+        if os.path.exists(json_path):
+            model = xgboost.Booster()
+            model.load_model(json_path)
+            return model
     except Exception as e:
         return e
+
+    # fallback to binary
+    try:
+        if os.path.exists(bin_path):
+            model = xgboost.Booster()
+            model.load_model(bin_path)
+            return model
+    except Exception as e:
+        return e
+
+    return FileNotFoundError("No model file found (tried xgb_model.json and xgb_model.bin)")
 
 
 st.set_page_config(page_title="Heart Attack Prediction", layout="centered")
