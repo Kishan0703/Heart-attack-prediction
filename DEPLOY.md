@@ -16,7 +16,7 @@ git init
 git add .
 git commit -m "Initial commit"
 # Option 1 (using GitHub web): Create an empty repo on github.com then:
-git remote add origin https://github.com/<USER>/<REPO>.git
+git remote add origin https://github.com/Kishan0703/Heart-attack-prediction.git
 git branch -M main
 git push -u origin main
 

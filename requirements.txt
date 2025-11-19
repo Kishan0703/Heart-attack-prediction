@@ -1,7 +1,9 @@
 streamlit
-numpy==1.21.4
+# Use a numpy compatible with modern Python (3.12/3.13). Avoid building very old wheels.
+numpy>=1.24
 pickle-mixin==1.0.2
-streamlit
 streamlit-option-menu
-scikit-learn==1.0.1
-xgboost
+# Use a recent scikit-learn that supports newer Python versions
+scikit-learn>=1.2
+# Use a reasonably recent xgboost. If you need to load legacy binary model, you can pin to 1.7.6.
+xgboost>=1.7.6
